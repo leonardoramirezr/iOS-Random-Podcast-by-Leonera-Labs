@@ -2,8 +2,12 @@ import SwiftUI
 
 /// Sheet that picks a random episode from the saved podcasts and shows it.
 struct RandomEpisodeView: View {
+    /// How many times to pick again when the random pick is an episode the user already opened.
+    private static let maxRepeatRetries = 10
+
     @Environment(SpotifyAuth.self) private var auth
     @Environment(ShowLibrary.self) private var library
+    @Environment(OpenedEpisodes.self) private var openedEpisodes
     @Environment(\.dismiss) private var dismiss
 
     @State private var phase = Phase.loading
@@ -63,7 +67,14 @@ struct RandomEpisodeView: View {
     private func pickEpisode() async {
         phase = .loading
         do {
-            let episode = try await SpotifyAPI(auth: auth).randomEpisode(from: library.shows)
+            let spotify = SpotifyAPI(auth: auth)
+            var episode = try await spotify.randomEpisode(from: library.shows)
+            // Pick again while the episode was already opened. After the retry limit, show the last pick.
+            var retries = 0
+            while openedEpisodes.contains(episode), retries < Self.maxRepeatRetries {
+                episode = try await spotify.randomEpisode(from: library.shows)
+                retries += 1
+            }
             phase = .loaded(episode)
         } catch {
             phase = .failed(error.localizedDescription)
@@ -73,6 +84,9 @@ struct RandomEpisodeView: View {
 
 private struct EpisodeDetailView: View {
     let episode: PodcastEpisode
+
+    @Environment(OpenedEpisodes.self) private var openedEpisodes
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         ScrollView {
@@ -91,7 +105,10 @@ private struct EpisodeDetailView: View {
                 .font(.footnote)
                 .foregroundStyle(.secondary)
 
-                Link(destination: episode.spotifyURL) {
+                Button {
+                    openedEpisodes.markOpened(episode)
+                    openURL(episode.spotifyURL)
+                } label: {
                     Label("Open in Spotify", systemImage: "play.circle.fill")
                         .frame(maxWidth: .infinity)
                 }
