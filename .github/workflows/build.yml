@@ -1,0 +1,274 @@
+name: Build and publish
+
+on:
+  push:
+    branches: ['**', '!gh-pages']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Builds on main run one at a time and are never cancelled. Other builds each get their own group.
+concurrency:
+  group: ${{ github.ref == 'refs/heads/main' && 'main' || github.run_id }}
+  cancel-in-progress: false
+
+env:
+  PROJECT_NAME: RandomPodcast
+  SCHEME: RandomPodcast
+  APP_NAME: RandomPodcast
+  BUNDLE_ID: com.leonardoramirezr.podcastrandombyleoneralabs
+  ARCHIVE_PATH: build/RandomPodcast.xcarchive
+  EXPORT_PATH: build/export
+
+jobs:
+  build:
+    name: Build IPA
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check signing secrets
+        id: signing
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          missing=()
+          present=0
+          for name in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8 APPLE_TEAM_ID; do
+            if [ -n "${!name}" ]; then
+              present=$((present + 1))
+            else
+              missing+=("$name")
+            fi
+          done
+          if [ "$present" -eq 0 ]; then
+            echo "No signing secrets are configured: this run produces an unsigned IPA and publishes nothing."
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+          elif [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::Incomplete signing configuration. Missing secrets: ${missing[*]}. Configure all four secrets (ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8, APPLE_TEAM_ID) or none."
+            exit 1
+          else
+            echo "signed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Compute version and tag
+        id: version
+        run: |
+          set -eo pipefail
+          last_stable="$(git tag -l | grep -E '^0\.[0-9]+\.0$' | sort -t. -k2,2n | tail -n 1 || true)"
+          last_minor=0
+          if [ -n "$last_stable" ]; then
+            last_minor="$(echo "$last_stable" | cut -d. -f2)"
+          fi
+          sha7="$(echo "$GITHUB_SHA" | cut -c1-7)"
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            version="0.$((last_minor + 1)).0"
+            tag="$version"
+            channel="stable"
+          else
+            version="${last_stable:-0.0.0}"
+            tag="build-${GITHUB_RUN_NUMBER}-${sha7}"
+            channel="prerelease"
+          fi
+          {
+            echo "version=$version"
+            echo "tag=$tag"
+            echo "channel=$channel"
+          } >> "$GITHUB_OUTPUT"
+          echo "Version $version, tag $tag, channel $channel"
+
+      - name: Generate Xcode project
+        run: |
+          set -eo pipefail
+          command -v xcodegen >/dev/null || brew install xcodegen
+          xcodegen generate --spec project.yml
+
+      - name: Prepare App Store Connect key
+        if: steps.signing.outputs.signed == 'true'
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          set -eo pipefail
+          key_path="$RUNNER_TEMP/AuthKey_${ASC_KEY_ID}.p8"
+          printf '%s\n' "$ASC_KEY_P8" > "$key_path"
+          chmod 600 "$key_path"
+          echo "ASC_KEY_PATH=$key_path" >> "$GITHUB_ENV"
+          echo "DEV_CERTS_BEFORE=$RUNNER_TEMP/dev-certs-before.txt" >> "$GITHUB_ENV"
+
+      - name: Validate App Store Connect key and devices
+        if: steps.signing.outputs.signed == 'true'
+        run: python3 scripts/asc.py check
+
+      - name: Record existing Apple Development certificates
+        if: steps.signing.outputs.signed == 'true'
+        run: python3 scripts/asc.py keychain-serials "$DEV_CERTS_BEFORE"
+
+      - name: Archive (signed)
+        if: steps.signing.outputs.signed == 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -eo pipefail
+          mkdir -p build
+          xcodebuild archive \
+            -project "$PROJECT_NAME.xcodeproj" \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$ARCHIVE_PATH" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+            CODE_SIGN_STYLE=Automatic \
+            BUNDLE_ID="$BUNDLE_ID" \
+            MARKETING_VERSION="$VERSION" \
+            CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER"
+
+      - name: Archive (unsigned)
+        if: steps.signing.outputs.signed != 'true'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -eo pipefail
+          mkdir -p build
+          xcodebuild archive \
+            -project "$PROJECT_NAME.xcodeproj" \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$ARCHIVE_PATH" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            BUNDLE_ID="$BUNDLE_ID" \
+            MARKETING_VERSION="$VERSION" \
+            CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER"
+
+      - name: Export Ad Hoc IPA
+        if: steps.signing.outputs.signed == 'true'
+        run: |
+          set -eo pipefail
+          mkdir -p "$EXPORT_PATH"
+          cat > build/ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>release-testing</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>teamID</key>
+            <string>${APPLE_TEAM_ID}</string>
+            <key>manageAppVersionAndBuildNumber</key>
+            <false/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$ARCHIVE_PATH" \
+            -exportPath "$EXPORT_PATH" \
+            -exportOptionsPlist build/ExportOptions.plist \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          ipa="$(find "$EXPORT_PATH" -maxdepth 1 -name '*.ipa' | head -n 1)"
+          test -n "$ipa" || { echo "::error::Export did not produce an IPA"; exit 1; }
+          echo "IPA_PATH=$GITHUB_WORKSPACE/$ipa" >> "$GITHUB_ENV"
+
+      - name: Verify Ad Hoc provisioning profiles
+        if: steps.signing.outputs.signed == 'true'
+        run: python3 scripts/verify_adhoc.py "$IPA_PATH" --bundle-id "$BUNDLE_ID" --summary build/summary.json
+
+      - name: Package unsigned IPA
+        if: steps.signing.outputs.signed != 'true'
+        run: |
+          set -eo pipefail
+          mkdir -p "$EXPORT_PATH" build/unsigned/Payload
+          cp -R "$ARCHIVE_PATH/Products/Applications/$APP_NAME.app" build/unsigned/Payload/
+          ipa_out="$GITHUB_WORKSPACE/$EXPORT_PATH/$APP_NAME-unsigned.ipa"
+          (cd build/unsigned && zip -qry "$ipa_out" Payload)
+          echo "IPA_PATH=$ipa_out" >> "$GITHUB_ENV"
+          {
+            echo "## Unsigned build"
+            echo
+            echo "No signing secrets are configured, so the IPA is unsigned. It is uploaded as a workflow artifact and nothing was published."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Build install page
+        id: page
+        if: steps.signing.outputs.signed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          CHANNEL: ${{ steps.version.outputs.channel }}
+        run: |
+          set -eo pipefail
+          python3 scripts/make_build_page.py \
+            --ipa "$IPA_PATH" \
+            --summary build/summary.json \
+            --icon App/Assets.xcassets/AppIcon.appiconset/AppIcon.png \
+            --tag "$TAG" \
+            --channel "$CHANNEL" \
+            --run-number "$GITHUB_RUN_NUMBER" \
+            --commit-sha "$GITHUB_SHA" \
+            --commit-title "$(git log -1 --format=%s "$GITHUB_SHA")" \
+            --repo "$GITHUB_REPOSITORY" \
+            --out "build/site/$TAG" \
+            --notes build/release-notes.md
+          {
+            echo "## Install build $TAG"
+            echo
+            cat build/release-notes.md
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish to GitHub Pages
+        if: steps.signing.outputs.signed == 'true'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: bash scripts/publish-pages.sh "$TAG" "build/site/$TAG"
+
+      - name: Create GitHub release
+        if: steps.signing.outputs.signed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          CHANNEL: ${{ steps.version.outputs.channel }}
+        run: |
+          set -eo pipefail
+          if [ "$CHANNEL" = "stable" ]; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "$TAG" --notes-file build/release-notes.md --latest
+          else
+            gh release create "$TAG" --target "$GITHUB_SHA" --title "$TAG" --notes-file build/release-notes.md --prerelease
+          fi
+
+      - name: Revoke temporary development certificates
+        if: always() && steps.signing.outputs.signed == 'true'
+        run: python3 scripts/asc.py revoke-new "$DEV_CERTS_BEFORE"
+
+      - name: Remove App Store Connect key
+        if: always() && steps.signing.outputs.signed == 'true'
+        run: |
+          if [ -n "${ASC_KEY_PATH:-}" ]; then
+            rm -f "$ASC_KEY_PATH"
+          fi
+
+      - name: Upload IPA artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RandomPodcast-${{ github.run_number }}
+          path: build/export/*.ipa
+          if-no-files-found: warn
