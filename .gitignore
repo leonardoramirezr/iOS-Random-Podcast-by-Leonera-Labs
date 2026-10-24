@@ -1,0 +1,12 @@
+# Xcode and XcodeGen output (regenerate with `xcodegen generate`)
+*.xcodeproj
+*.xcworkspace
+xcuserdata/
+DerivedData/
+Config/Info.plist
+
+# Build output and packaged apps (the publish script force-adds the IPA to gh-pages)
+build/
+*.ipa
+
+.DS_Store
