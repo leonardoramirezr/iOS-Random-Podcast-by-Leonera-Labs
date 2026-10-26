@@ -21,3 +21,11 @@ struct PodcastEpisode: Identifiable, Hashable {
         URL(string: "https://open.spotify.com/episode/\(id)")!
     }
 }
+
+/// An episode the user opened in Spotify, kept with what the history list shows.
+struct OpenedEpisode: Codable, Identifiable, Hashable {
+    let id: String
+    let name: String
+    let showName: String
+    let openedAt: Date
+}

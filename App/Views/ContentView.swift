@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(SpotifyAuth.self) private var auth
     @Environment(ShowLibrary.self) private var library
+    @Environment(OpenedEpisodes.self) private var openedEpisodes
 
     @State private var isShowingRandomEpisode = false
     @State private var isConnecting = false
@@ -25,6 +26,26 @@ struct ContentView: View {
                     }
                     .onDelete { offsets in
                         library.remove(at: offsets)
+                    }
+                }
+
+                Section("Opened episodes") {
+                    if openedEpisodes.episodes.isEmpty {
+                        Text("Episodes you open in Spotify appear here.")
+                            .foregroundStyle(.secondary)
+                    }
+                    ForEach(openedEpisodes.episodes) { episode in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(episode.name)
+                                .font(.headline)
+                                .lineLimit(2)
+                            Text(episode.showName)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            Text(episode.openedAt, style: .date)
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }

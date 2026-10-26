@@ -14,6 +14,7 @@ An iPhone app (SwiftUI, iOS 17+) that connects to Spotify, lets you save podcast
   2. Read the episode count from `GET /shows/{id}/episodes`, split it into pages of 50, and pick a random page.
   3. Fetch that page and pick a random episode inside it. Entries that are `null` (unavailable in the market) are skipped.
 - **Open in Spotify**: a universal link (`https://open.spotify.com/episode/{id}`). When the Spotify app is installed, iOS opens the episode there. Otherwise it opens in Safari.
+- **Opened episodes**: the main screen lists every episode you opened in Spotify, newest first, with its show and date. Episodes in this list are skipped by the random pick, up to 10 retries.
 
 ## Spotify setup
 
