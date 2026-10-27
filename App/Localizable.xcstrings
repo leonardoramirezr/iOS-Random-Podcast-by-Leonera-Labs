@@ -113,6 +113,22 @@
         }
       }
     },
+    "Episodes you open in Spotify appear here.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Episodes you open in Spotify appear here."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los episodios que abras en Spotify aparecerán aquí."
+          }
+        }
+      }
+    },
     "Finding an episode…": {
       "localizations": {
         "en": {
@@ -189,6 +205,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Abrir en Spotify"
+          }
+        }
+      }
+    },
+    "Opened episodes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opened episodes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Episodios abiertos"
           }
         }
       }
