@@ -1,0 +1,19 @@
+{
+  "tag": "build-4-6918b2f",
+  "channel": "prerelease",
+  "version": "0.1.0",
+  "runNumber": 4,
+  "buildNumber": "4",
+  "displayName": "Random Podcast by Leonera Labs",
+  "bundleId": "com.leonardoramirezr.podcastrandombyleoneralabs",
+  "deviceCount": 1,
+  "profileName": "iOS Team Ad Hoc Provisioning Profile: com.leonardoramirezr.podcastrandombyleoneralabs",
+  "profileExpires": "2027-10-13 06:09:50",
+  "commitSha": "6918b2f2edd3c23a5ebed8a6291bcb963f0c24d4",
+  "commitTitle": "Skip already-opened episodes in random pick",
+  "createdAt": "2026-10-24 16:14 UTC",
+  "pageUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-4-6918b2f/",
+  "ipaUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-4-6918b2f/RandomPodcast.ipa",
+  "manifestUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-4-6918b2f/manifest.plist",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fleonardoramirezr.github.io%2FiOS-Random-Podcast-by-Leonera-Labs%2Fbuild-4-6918b2f%2Fmanifest.plist"
+}

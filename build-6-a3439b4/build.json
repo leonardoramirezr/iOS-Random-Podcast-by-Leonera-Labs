@@ -1,0 +1,19 @@
+{
+  "tag": "build-6-a3439b4",
+  "channel": "prerelease",
+  "version": "0.2.0",
+  "runNumber": 6,
+  "buildNumber": "6",
+  "displayName": "Random Podcast by Leonera Labs",
+  "bundleId": "com.leonardoramirezr.podcastrandombyleoneralabs",
+  "deviceCount": 2,
+  "profileName": "iOS Team Ad Hoc Provisioning Profile: com.leonardoramirezr.podcastrandombyleoneralabs",
+  "profileExpires": "2027-10-13 06:09:50",
+  "commitSha": "a3439b4ffa2e5ec90de203ae34baef46188c787f",
+  "commitTitle": "Show history of opened episodes on the main screen",
+  "createdAt": "2026-10-26 14:14 UTC",
+  "pageUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-6-a3439b4/",
+  "ipaUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-6-a3439b4/RandomPodcast.ipa",
+  "manifestUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-6-a3439b4/manifest.plist",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fleonardoramirezr.github.io%2FiOS-Random-Podcast-by-Leonera-Labs%2Fbuild-6-a3439b4%2Fmanifest.plist"
+}
