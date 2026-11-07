@@ -55,7 +55,8 @@ struct SearchShowsView: View {
             }
         }
         .navigationTitle("Add podcasts")
-        .searchable(text: $query, prompt: "Search podcasts")
+        // Keep the search field visible when the screen opens, instead of hiding it until the list is scrolled.
+        .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search podcasts")
         .task(id: query) {
             await runSearch(for: query)
         }
