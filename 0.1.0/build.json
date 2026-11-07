@@ -1,0 +1,19 @@
+{
+  "tag": "0.1.0",
+  "channel": "stable",
+  "version": "0.1.0",
+  "runNumber": 3,
+  "buildNumber": "3",
+  "displayName": "Random Podcast by Leonera Labs",
+  "bundleId": "com.leonardoramirezr.podcastrandombyleoneralabs",
+  "deviceCount": 1,
+  "profileName": "iOS Team Ad Hoc Provisioning Profile: com.leonardoramirezr.podcastrandombyleoneralabs",
+  "profileExpires": "2027-10-13 06:09:50",
+  "commitSha": "9f4015e6a6b051c4502d5904b5e2b7ebe14aed7d",
+  "commitTitle": "Add Random Podcast app and iOS CI pipeline (#1)",
+  "createdAt": "2026-10-24 04:16 UTC",
+  "pageUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/0.1.0/",
+  "ipaUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/0.1.0/RandomPodcast.ipa",
+  "manifestUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/0.1.0/manifest.plist",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fleonardoramirezr.github.io%2FiOS-Random-Podcast-by-Leonera-Labs%2F0.1.0%2Fmanifest.plist"
+}

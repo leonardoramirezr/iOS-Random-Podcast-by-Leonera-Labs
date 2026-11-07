@@ -1,0 +1,19 @@
+{
+  "tag": "0.2.0",
+  "channel": "stable",
+  "version": "0.2.0",
+  "runNumber": 5,
+  "buildNumber": "5",
+  "displayName": "Random Podcast by Leonera Labs",
+  "bundleId": "com.leonardoramirezr.podcastrandombyleoneralabs",
+  "deviceCount": 1,
+  "profileName": "iOS Team Ad Hoc Provisioning Profile: com.leonardoramirezr.podcastrandombyleoneralabs",
+  "profileExpires": "2027-10-13 06:09:50",
+  "commitSha": "0a8974ac0f0a25d3c0536da35a22fc39d2fc38bf",
+  "commitTitle": "Skip already-opened episodes in random pick (#2)",
+  "createdAt": "2026-10-24 17:25 UTC",
+  "pageUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/0.2.0/",
+  "ipaUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/0.2.0/RandomPodcast.ipa",
+  "manifestUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/0.2.0/manifest.plist",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fleonardoramirezr.github.io%2FiOS-Random-Podcast-by-Leonera-Labs%2F0.2.0%2Fmanifest.plist"
+}

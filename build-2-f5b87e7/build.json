@@ -1,0 +1,19 @@
+{
+  "tag": "build-2-f5b87e7",
+  "channel": "prerelease",
+  "version": "0.0.0",
+  "runNumber": 2,
+  "buildNumber": "2",
+  "displayName": "Random Podcast by Leonera Labs",
+  "bundleId": "com.leonardoramirezr.podcastrandombyleoneralabs",
+  "deviceCount": 1,
+  "profileName": "iOS Team Ad Hoc Provisioning Profile: com.leonardoramirezr.podcastrandombyleoneralabs",
+  "profileExpires": "2027-10-13 06:09:50",
+  "commitSha": "f5b87e742aaea154418a7f60c4dee7aa7967494c",
+  "commitTitle": "Change Spotify client ID in project.yml",
+  "createdAt": "2026-10-24 04:05 UTC",
+  "pageUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-2-f5b87e7/",
+  "ipaUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-2-f5b87e7/RandomPodcast.ipa",
+  "manifestUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-2-f5b87e7/manifest.plist",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fleonardoramirezr.github.io%2FiOS-Random-Podcast-by-Leonera-Labs%2Fbuild-2-f5b87e7%2Fmanifest.plist"
+}

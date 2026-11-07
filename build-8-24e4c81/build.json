@@ -1,0 +1,19 @@
+{
+  "tag": "build-8-24e4c81",
+  "channel": "prerelease",
+  "version": "0.3.0",
+  "runNumber": 8,
+  "buildNumber": "8",
+  "displayName": "Random Podcast by Leonera Labs",
+  "bundleId": "com.leonardoramirezr.podcastrandombyleoneralabs",
+  "deviceCount": 2,
+  "profileName": "iOS Team Ad Hoc Provisioning Profile: com.leonardoramirezr.podcastrandombyleoneralabs",
+  "profileExpires": "2027-10-13 06:09:50",
+  "commitSha": "24e4c816e8d3b96804d9e5e0fe0406d985a247b4",
+  "commitTitle": "Add a \"One podcast at a time\" list next to \"Random from all\"",
+  "createdAt": "2026-11-07 03:43 UTC",
+  "pageUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-8-24e4c81/",
+  "ipaUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-8-24e4c81/RandomPodcast.ipa",
+  "manifestUrl": "https://leonardoramirezr.github.io/iOS-Random-Podcast-by-Leonera-Labs/build-8-24e4c81/manifest.plist",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fleonardoramirezr.github.io%2FiOS-Random-Podcast-by-Leonera-Labs%2Fbuild-8-24e4c81%2Fmanifest.plist"
+}
