@@ -6,6 +6,7 @@ struct ContentView: View {
     @Environment(OpenedEpisodes.self) private var openedEpisodes
 
     @State private var isShowingRandomEpisode = false
+    @State private var searchList: ShowList?
     @State private var isConnecting = false
     @State private var errorMessage: String?
 
@@ -16,17 +17,44 @@ struct ContentView: View {
                     connectionRows
                 }
 
-                Section("Saved podcasts") {
-                    if library.shows.isEmpty {
-                        Text("Search for podcasts and save them here to pick random episodes.")
+                Section {
+                    let shows = library.shows(in: .randomFromAll)
+                    if shows.isEmpty {
+                        Text("No podcasts saved yet.")
                             .foregroundStyle(.secondary)
                     }
-                    ForEach(library.shows) { show in
+                    ForEach(shows) { show in
                         ShowRow(show: show)
                     }
                     .onDelete { offsets in
-                        library.remove(at: offsets)
+                        library.remove(at: offsets, from: .randomFromAll)
                     }
+                } header: {
+                    Text(ShowList.randomFromAll.title)
+                } footer: {
+                    Text("“Random episode from all” picks an episode from any podcast in this list.")
+                }
+
+                Section {
+                    let shows = library.shows(in: .onePodcast)
+                    if shows.isEmpty {
+                        Text("No podcasts saved yet.")
+                            .foregroundStyle(.secondary)
+                    }
+                    ForEach(shows) { show in
+                        NavigationLink {
+                            ShowDetailView(show: show)
+                        } label: {
+                            ShowRow(show: show)
+                        }
+                    }
+                    .onDelete { offsets in
+                        library.remove(at: offsets, from: .onePodcast)
+                    }
+                } header: {
+                    Text(ShowList.onePodcast.title)
+                } footer: {
+                    Text("Tap a podcast to get a random episode from that podcast only.")
                 }
 
                 Section("Opened episodes") {
@@ -35,45 +63,44 @@ struct ContentView: View {
                             .foregroundStyle(.secondary)
                     }
                     ForEach(openedEpisodes.episodes) { episode in
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(episode.name)
-                                .font(.headline)
-                                .lineLimit(2)
-                            Text(episode.showName)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                            Text(episode.openedAt, style: .date)
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
+                        OpenedEpisodeRow(episode: episode)
                     }
                 }
             }
             .navigationTitle("Random Podcast")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        SearchShowsView()
+                    Menu {
+                        ForEach(ShowList.allCases) { list in
+                            Button {
+                                searchList = list
+                            } label: {
+                                Text("Add to “\(String(localized: list.title))”")
+                            }
+                        }
                     } label: {
                         Label("Add podcasts", systemImage: "plus")
                     }
                 }
             }
+            .navigationDestination(item: $searchList) { list in
+                SearchShowsView(list: list)
+            }
             .safeAreaInset(edge: .bottom) {
                 Button {
                     isShowingRandomEpisode = true
                 } label: {
-                    Label("Random episode", systemImage: "shuffle")
+                    Label("Random episode from all", systemImage: "shuffle")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
-                .disabled(!auth.isConnected || library.shows.isEmpty)
+                .disabled(!auth.isConnected || library.shows(in: .randomFromAll).isEmpty)
                 .padding()
                 .background(.bar)
             }
             .sheet(isPresented: $isShowingRandomEpisode) {
-                RandomEpisodeView()
+                RandomEpisodeView(shows: library.shows(in: .randomFromAll))
             }
             .alert("Something went wrong", isPresented: isShowingError) {
                 Button("OK") { errorMessage = nil }

@@ -13,6 +13,7 @@ enum SpotifyError: LocalizedError {
     case invalidResponse
     case noSavedShows
     case noEpisodes
+    case noEpisodesInShow
 
     var errorDescription: String? {
         switch self {
@@ -38,6 +39,8 @@ enum SpotifyError: LocalizedError {
             String(localized: "Save at least one podcast first.")
         case .noEpisodes:
             String(localized: "None of your saved podcasts has episodes available.")
+        case .noEpisodesInShow:
+            String(localized: "This podcast has no episodes available.")
         }
     }
 }

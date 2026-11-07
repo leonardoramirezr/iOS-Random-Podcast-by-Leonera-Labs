@@ -17,6 +17,22 @@
         }
       }
     },
+    "Add to “%@”": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add to “%@”"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir a «%@»"
+          }
+        }
+      }
+    },
     "Connect Spotify first.": {
       "localizations": {
         "en": {
@@ -161,6 +177,22 @@
         }
       }
     },
+    "No podcasts saved yet.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No podcasts saved yet."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún no hay podcasts guardados."
+          }
+        }
+      }
+    },
     "None of your saved podcasts has episodes available.": {
       "localizations": {
         "en": {
@@ -189,6 +221,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "OK"
+          }
+        }
+      }
+    },
+    "One podcast at a time": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One podcast at a time"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un podcast a la vez"
           }
         }
       }
@@ -241,22 +289,6 @@
         }
       }
     },
-    "Random Podcast": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Random Podcast"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Random Podcast"
-          }
-        }
-      }
-    },
     "Random episode": {
       "localizations": {
         "en": {
@@ -269,6 +301,70 @@
           "stringUnit": {
             "state": "translated",
             "value": "Episodio aleatorio"
+          }
+        }
+      }
+    },
+    "Random episode from all": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random episode from all"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Episodio aleatorio de todos"
+          }
+        }
+      }
+    },
+    "Random episode from this podcast": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random episode from this podcast"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Episodio aleatorio de este podcast"
+          }
+        }
+      }
+    },
+    "Random from all": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random from all"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aleatorio entre todos"
+          }
+        }
+      }
+    },
+    "Random Podcast": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random Podcast"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Random Podcast"
           }
         }
       }
@@ -289,34 +385,18 @@
         }
       }
     },
-    "Saved podcasts": {
+    "Save to": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Saved podcasts"
+            "value": "Save to"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Podcasts guardados"
-          }
-        }
-      }
-    },
-    "Search for podcasts and save them here to pick random episodes.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search for podcasts and save them here to pick random episodes."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Busca podcasts y guárdalos aquí para elegir episodios al azar."
+            "value": "Guardar en"
           }
         }
       }
@@ -481,6 +561,54 @@
         }
       }
     },
+    "Tap a podcast to get a random episode from that podcast only.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap a podcast to get a random episode from that podcast only."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca un podcast para obtener un episodio aleatorio solo de ese podcast."
+          }
+        }
+      }
+    },
+    "The random episode can come from any podcast in this list.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The random episode can come from any podcast in this list."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El episodio aleatorio puede salir de cualquier podcast de esta lista."
+          }
+        }
+      }
+    },
+    "The random episode comes from this podcast only.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The random episode comes from this podcast only."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El episodio aleatorio sale solo de este podcast."
+          }
+        }
+      }
+    },
     "The sign-in response did not match the request. Try again.": {
       "localizations": {
         "en": {
@@ -493,6 +621,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "La respuesta de inicio de sesión no coincide con la solicitud. Inténtalo de nuevo."
+          }
+        }
+      }
+    },
+    "This podcast has no episodes available.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This podcast has no episodes available."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este podcast no tiene episodios disponibles."
           }
         }
       }
@@ -513,6 +657,22 @@
         }
       }
     },
+    "You select one podcast from this list and get a random episode from that podcast only.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You select one podcast from this list and get a random episode from that podcast only."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionas un podcast de esta lista y obtienes un episodio aleatorio solo de ese podcast."
+          }
+        }
+      }
+    },
     "Your Spotify session expired. Connect again.": {
       "localizations": {
         "en": {
@@ -525,6 +685,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tu sesión de Spotify caducó. Vuelve a conectarte."
+          }
+        }
+      }
+    },
+    "“Random episode from all” picks an episode from any podcast in this list.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“Random episode from all” picks an episode from any podcast in this list."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Episodio aleatorio de todos» elige un episodio de cualquier podcast de esta lista."
           }
         }
       }
