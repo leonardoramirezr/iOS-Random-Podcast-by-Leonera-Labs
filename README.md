@@ -8,9 +8,11 @@ An iPhone app (SwiftUI, iOS 17+) that connects to Spotify, lets you save podcast
 ## Features
 
 - **Connect with Spotify** using Authorization Code with PKCE. No client secret ships in the app. Tokens are stored in the Keychain.
-- **Search and save podcasts** inside the app. Saved podcasts persist on the device.
+- **Search and save podcasts** inside the app. Saved podcasts persist on the device. Each podcast is saved in one of two lists (the **Save to** picker on the search screen chooses which):
+  - **Random from all**: the **Random episode from all** button picks one episode from any podcast in this list. Podcasts saved before there were two lists are in this one.
+  - **One podcast at a time**: tap a podcast in this list to open its screen, then tap **Random episode from this podcast** to get an episode from that podcast only.
 - **Random episode**:
-  1. Pick a saved podcast at random.
+  1. Pick a podcast at random from the ones that apply (the whole "Random from all" list, or the one podcast you selected).
   2. Read the episode count from `GET /shows/{id}/episodes`, split it into pages of 50, and pick a random page.
   3. Fetch that page and pick a random episode inside it. Entries that are `null` (unavailable in the market) are skipped.
 - **Open in Spotify**: a universal link (`https://open.spotify.com/episode/{id}`). When the Spotify app is installed, iOS opens the episode there. Otherwise it opens in Safari.

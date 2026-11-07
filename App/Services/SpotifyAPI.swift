@@ -22,7 +22,7 @@ struct SpotifyAPI {
             .map { PodcastShow(id: $0.id, name: $0.name, imageURL: $0.images?.first?.url) }
     }
 
-    /// Picks a random episode from the saved shows.
+    /// Picks a random episode from the given shows.
     ///
     /// A show is chosen at random, then a random page of its paginated episode list,
     /// then a random episode inside that page. Shows without playable episodes are skipped.
@@ -33,7 +33,7 @@ struct SpotifyAPI {
                 return episode
             }
         }
-        throw SpotifyError.noEpisodes
+        throw shows.count == 1 ? SpotifyError.noEpisodesInShow : SpotifyError.noEpisodes
     }
 
     // MARK: - Private helpers

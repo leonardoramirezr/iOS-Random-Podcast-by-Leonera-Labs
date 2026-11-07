@@ -1,12 +1,14 @@
 import SwiftUI
 
-/// Sheet that picks a random episode from the saved podcasts and shows it.
+/// Sheet that picks a random episode from the given podcasts and shows it.
 struct RandomEpisodeView: View {
+    /// Podcasts the episode can come from: a whole list, or a single podcast.
+    let shows: [PodcastShow]
+
     /// How many times to pick again when the random pick is an episode the user already opened.
     private static let maxRepeatRetries = 10
 
     @Environment(SpotifyAuth.self) private var auth
-    @Environment(ShowLibrary.self) private var library
     @Environment(OpenedEpisodes.self) private var openedEpisodes
     @Environment(\.dismiss) private var dismiss
 
@@ -68,11 +70,11 @@ struct RandomEpisodeView: View {
         phase = .loading
         do {
             let spotify = SpotifyAPI(auth: auth)
-            var episode = try await spotify.randomEpisode(from: library.shows)
+            var episode = try await spotify.randomEpisode(from: shows)
             // Pick again while the episode was already opened. After the retry limit, show the last pick.
             var retries = 0
             while openedEpisodes.contains(episode), retries < Self.maxRepeatRetries {
-                episode = try await spotify.randomEpisode(from: library.shows)
+                episode = try await spotify.randomEpisode(from: shows)
                 retries += 1
             }
             phase = .loaded(episode)
